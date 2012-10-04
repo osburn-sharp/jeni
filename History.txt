@@ -4,6 +4,6 @@
 == History
 
 
-[jeni-0.2.0 04_Oct-2012]
+[jeni-0.2.0 04-Oct-2012]
 
   Application forked from local 'jeni' due to Gam-space name clash.
