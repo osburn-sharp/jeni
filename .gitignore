@@ -1,0 +1,6 @@
+doc/
+
+log/*.log
+tmp/**/*
+
+.redcar/

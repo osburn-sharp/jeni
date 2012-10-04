@@ -1,0 +1,3 @@
+A simple alternative to rubigen and thor that can be used to create a post-install script 
+for a gem needing more than the standard file ops covered by rubygems. It can also be 
+used for straight directories instead of gems, if required.

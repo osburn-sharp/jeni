@@ -1,0 +1,6 @@
+== Outstanding Bugs and Change Requests for Jeni
+
+[14-Sep-2012]
+
+  * Crashes if it tries to read a link that is a file
+  * chown and chgrp actions etc are blind to whether they are needed or not!

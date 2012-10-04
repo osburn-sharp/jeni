@@ -1,0 +1,1 @@
+A little post-install helper for Gems to install things Gems can't reach, and can be used for non-gems too.

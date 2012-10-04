@@ -1,0 +1,7 @@
+--no-private
+--protected
+-
+LICENCE.rdoc
+History.txt
+Bugs.rdoc
+Gemfile
