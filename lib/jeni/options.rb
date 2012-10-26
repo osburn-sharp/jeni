@@ -63,6 +63,11 @@ module Jeni
       @group = group
     end
     
+    # set the default target root to /usr instead of /usr/local
+    def usr
+      @target_root = '/usr/'
+    end
+    
   end
   
 end

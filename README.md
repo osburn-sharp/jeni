@@ -8,7 +8,7 @@ for straight directories instead of gems, if required.
 
 **GitHub:** [https://github.com/osburn-sharp/jeni](https://github.com/osburn-sharp/jeni)
 
-**RubyDoc:** [http://rdoc.info/github/osburn-sharp/jeni/frames](http://rdoc.info/github/osburn-sharp/jeni/frames)
+**RubyDoc:** [http://rubydoc.info/github/osburn-sharp/jeni/frames](http://rubydoc.info/github/osburn-sharp/jeni/frames)
 
 **RubyGems:** [https://rubygems.org/gems/jeni](https://rubygems.org/gems/jeni)
 
@@ -18,7 +18,7 @@ To install,
 
     gem install jeni.
     
-It is a plain library with no binaries or the like. Documentation is available from [RDoc]()
+It is a plain library with no binaries or the like.
 
 ## Getting Started
 
@@ -36,8 +36,8 @@ This is a simple example:
       jeni.pretend(opt[:pretend]) 
       # copy a file
       jeni.file('source.rb', '/etc/target.rb')
-      # create a wrapper
-      jeni.wrapper('sbin/jenerate.rb', '/usr/sbin/jenerate')
+      # create a wrapper in /usr/local
+      jeni.wrapper('sbin/jenerate.rb', 'sbin/jenerate')
     end.run!
     # and run jeni
 
@@ -93,6 +93,10 @@ If the source is a relative path then it will be looked for relative to the Inst
 So, for a gem {Jeni::Installer.new_from_gem} it will be relative to the gem's directory and for a directory 
 {Jeni::Installer.new} it will be relative to that. If the source is an absolute path (starts with '/')
 then it will be used as given.
+
+If the target is a relative path then it will be relative to /usr/local unless you
+use the -u switch (with the optparse option) or the {Jeni::Options.usr} method to set
+it to '/usr'.
     
 Global options can also be set, as defined in #{Jeni::Options}. The same options can be set using {Jeni::Optparse#optparse} 
 to automatically process command line options. Call it with ARGV instead of manually setting Jeni's options.
@@ -134,7 +138,8 @@ Check the {file:Gemfile} for other dependencies.
 
 ### Documentation
 
-Documentation is best viewed using Yard. Documentation is available from [Rubydoc](http://rdoc.info/github/osburn-sharp/jeni/frames)
+Documentation is best viewed using Yard. Documentation is available from 
+[Rubydoc](http://rubydoc.info/github/osburn-sharp/jeni/frames)
 
 ## Testing/Modifying
 

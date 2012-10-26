@@ -69,6 +69,10 @@ module Jeni
         @group = g
       end
       
+      opts.on('-u', '--usr', 'set the default target to /usr instead of /usr/local') do
+        @target_root = '/usr/'
+      end
+      
       opts.on_tail('-h', '--help', 'you are looking at it') do
         puts opts
         exit 0

@@ -24,6 +24,7 @@ class JeniUtils
   include Jeni::Utils
   include Jeni::Options
   include Jeni::IO
+  include Jeni::Actions
   def initialize
     @app_name = 'jeni'
     @errors = {}
@@ -114,14 +115,16 @@ describe Jeni do
     source_old = File.join(test_dir,  'source', 'jeni.rb')
     source = File.join(test_dir,  'source', 'jeni-diff.rb')
     target = File.join(test_dir,  'target', 'jeni.rb')
-    diff = Diffy::Diff.new(source, target, :source=>'files').to_s(:color)
+    diff = Diffy::Diff.new(target, source, :source=>'files').to_s(:color)
     response = @jeni.say(:exists, target, :warning, true)
     response2 = @jeni.say(:skipping, target, :warning, true)
-    @jeni.should_receive(:puts).with(response)
-    @jeni.should_receive(:puts).with(response2)
-    @jeni.should_receive(:print).twice
-    @jeni.should_receive(:gets).and_return('d', 'n')
+    @jeni.should_receive(:puts).once.with(response)
+    @jeni.should_receive(:print).once
+    @jeni.should_receive(:gets).and_return('d')
     @jeni.should_receive(:puts).with(diff)
+    @jeni.should_receive(:print).once
+    @jeni.should_receive(:gets).and_return('n')
+    @jeni.should_receive(:puts).once.with(response2)
     #@jeni.should_receive(:print)
     @jeni.copy(source, target).should be_nil
     FileTest.exists?(target).should be_true

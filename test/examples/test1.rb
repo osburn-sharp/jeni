@@ -7,7 +7,7 @@ require 'rspec/mocks/standalone'
 
 gspec = double("Gem::Specification")
 Gem::Specification.stub(:find_by_name).and_return(gspec)
-test_dir = File.dirname(__FILE__)
+test_dir = File.expand_path(File.dirname(__FILE__))
 target_dir = File.join(test_dir, 'target2')
 FileUtils.mkdir(target_dir) unless FileTest.directory?(target_dir)
 FileUtils.rm_f Dir.glob("#{target_dir}/**")
@@ -26,5 +26,5 @@ Jeni::Installer.new_from_gem('jeni') do |jeni|
   jeni.wrapper('source/executable', File.join(target_dir, 'executable'), :chmod=>true)
   jeni.link('source/jeni.rb', File.join(target_dir, 'jeni_link.rb'))
   jeni.link('source/shebang.rb', File.join(target_dir, 'jeni_link.rb'))
-  jeni.link('/etc/conf.d/unicorn', File.join(target_dir, 'unicorn.jeni'))
+  jeni.link('/etc/init.d/unicorn', File.join(target_dir, 'unicorn.jeni'))
 end.run!

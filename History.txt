@@ -4,6 +4,11 @@
 == History
 
 
+[jeni-0.2.1 26-Oct-2012]
+
+  Added relative paths to targets that can take /usr/ or /usr/local as their root.
+  Got rspec tests to work
+
 [jeni-0.2.0 04-Oct-2012]
 
   Application forked from local 'jeni' due to Gam-space name clash.

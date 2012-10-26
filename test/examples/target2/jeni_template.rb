@@ -1,12 +1,10 @@
-# THIS IS A STANDARD TEMPLATE
-# Author: Robert
+# Author: Me
 # Created at: 16:15 25-10-12
 
 module Amodule
   class Aclass
     def amethod
-      puts "How do you do?"
+      puts "Welcome and well met"
     end
   end
 end
-# the standard

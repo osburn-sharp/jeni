@@ -43,6 +43,9 @@ module Jeni
     # this will create a target if it does not exist (and all intermediate paths) unless
     # the nomkdir option is set
     def check_target(target, owner=nil)
+      unless target[0,1] == '/' 
+        target = File.expand_path(File.join(@target_root, target))
+      end
       dir = File.dirname(target)
       unless FileTest.directory?(dir)
         unless @nomkdir 
@@ -50,13 +53,15 @@ module Jeni
           if owner then
             @commands << {:chown => {:file => dir, :owner => owner}}
           end
-          return
+          return target
         end
         @errors[:missing] = dir 
       end
       @errors[:unwritable] = dir unless FileTest.writable?(dir)
+      return target
     rescue
       @errors[:unwritable] = dir unless FileTest.writable?(dir)
+      return target
     end
     
     # ensure this is called for a gem

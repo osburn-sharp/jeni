@@ -65,6 +65,7 @@ module Jeni
       #@gem_spec = Gem::Specification.find_by_name(@gem_name)
       #@gem_dir = @gem_spec.gem_dir
       @source_root = source_root
+      @target_root = '/usr/local/'
       @commands = []
       @errors = {}
       @owner = nil
@@ -170,10 +171,13 @@ module Jeni
     end
     
     # copy a file from the source, relative to the gem home to the target
-    # which is absolute
+    # 
+    # If the target is relative it will joined to the target_root, which is
+    # by default /usr/local. This root can be changed to /usr with either
+    # {Jeni::Options.usr} or through {Jeni::Optparse}.
     # 
     # @param [String] source is the gem-relative path to the file to copy
-    # @param [String] target is an absolute path to copy to
+    # @param [String] target is a relative or absolute path to copy to
     # @params [Hash] opts options for copying the file
     # @option opts [String] :chown the name of the owner
     # @option opts [String] :chgrp the name of the group
@@ -187,11 +191,11 @@ module Jeni
       chmod = opts[:chmod]
       
       gsource = check_file(source)
-      check_target(target, owner)
+      gtarget = check_target(target, owner)
       check_chmod(chmod)
       
-      @commands << {:file => [gsource, target]}
-      process_options(opts, target)
+      @commands << {:file => [gsource, gtarget]}
+      process_options(opts, gtarget)
     end
     
     # copy all of the files in the source directory to the target directory
@@ -298,11 +302,11 @@ module Jeni
       opts[:chgrp] = locals.delete(:chgrp)
       
       gsource = check_file(source)
-      check_target(target, opts[:owner])
+      gtarget = check_target(target, opts[:owner])
       check_chmod(opts[:chmod])
       
-      @commands << {:generate => [gsource, target, locals]}
-      process_options(opts, target)
+      @commands << {:generate => [gsource, gtarget, locals]}
+      process_options(opts, gtarget)
     end
     
     # as for {Jeni::Installer#template} but searches for the source template from a list of predefined
@@ -318,11 +322,11 @@ module Jeni
       opts[:chmod] = locals.delete(:chmod)
       opts[:chgrp] = locals.delete(:chgrp)
       
-      check_target(target, opts[:owner])
+      gtarget = check_target(target, opts[:owner])
       check_chmod(opts[:chmod])
       
-      @commands << {:generate => [gsource, target, locals]}
-      process_options(opts, target)
+      @commands << {:generate => [gsource, gtarget, locals]}
+      process_options(opts, gtarget)
     end
     
     # create a wrapper script at target to call source in a similar manner to Gem's wrapper
@@ -341,10 +345,10 @@ module Jeni
       
       check_gem(:wrapper)
       gsource = check_file(source)
-      check_target(target, owner)
+      gtarget = check_target(target, owner)
       
-      @commands << {:wrap => [source, target, gsource]}
-      @commands << {:chmod => {:file => target, :mode => 0755}} if opts.has_key?(:chmod)
+      @commands << {:wrap => [source, gtarget, gsource]}
+      @commands << {:chmod => {:file => gtarget, :mode => 0755}} if opts.has_key?(:chmod)
     end
     
     # create a link at target to source
@@ -355,8 +359,8 @@ module Jeni
     def link(source, target)
       #gsource = File.expand_path(File.join(@source_root, source))
       gsource = check_file(source)
-      check_target(target)
-      @commands << {:link => [gsource, target]}
+      gtarget = check_target(target)
+      @commands << {:link => [gsource, gtarget]}
     end
     
     # output a message in the same format as other messages

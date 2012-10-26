@@ -4,7 +4,7 @@ require 'rubygems'
 $LOAD_PATH.unshift File.expand_path('../../lib', File.dirname(__FILE__))
 require 'jeni'
 
-test_dir = File.dirname(__FILE__)
+test_dir = File.expand_path(File.dirname(__FILE__))
 target_dir = File.join(test_dir, 'target2')
 FileUtils.mkdir(target_dir) unless FileTest.directory?(target_dir)
 FileUtils.rm_f Dir.glob("#{target_dir}/**")
