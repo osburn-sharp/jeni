@@ -79,13 +79,13 @@ module Jeni
     def check_user(user)
       Etc.getpwnam(user)
     rescue ArgumentError
-      @errors[:no_user] = "User does not exist: #{user}"
+      @errors[:no_user] = "User does not exist: #{user}" unless @new_users.include?(user)
     end
     
     def check_group(group)
       Etc.getgrnam(group)
     rescue ArgumentError
-      @errors[:group] = "Group does not exist: #{group}"
+      @errors[:group] = "Group does not exist: #{group}" unless @new_groups.include?(group)
     end
     
     # check there is no user
@@ -114,6 +114,8 @@ module Jeni
       return skip
     rescue ArgumentError
       # will get here if user does NOT exist  
+      @new_users << user
+      @new_groups << user if opts.has_key?(:user_group)
       return false # do not skip!
     end
     
@@ -134,6 +136,7 @@ module Jeni
       return skip
     rescue ArgumentError
       # will get here if user does NOT exist 
+      @new_groups << group
       return false
     end
     

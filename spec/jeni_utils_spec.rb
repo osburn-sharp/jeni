@@ -29,6 +29,8 @@ class JeniUtils
     @app_name = 'jeni'
     @errors = {}
     @commands = []
+    @new_users = Array.new
+    @new_groups = Array.new
     @source_root = File.expand_path(File.dirname(__FILE__) + '/../test/examples')
   end
   attr_accessor :errors
@@ -238,9 +240,11 @@ describe Jeni do
       puts err
     end
     @jeni.errors?.should be_false
-    @jeni.check_new_user("peppapig", {:uid=>10101}, false)
+    @jeni.check_new_user("peppapiglet", {:uid=>10101}, false)
     @jeni.errors?.should be_false
-    @jeni.check_new_user("peppapig", {:uid=>10101, :home=>'/home/peppa', :shell=>'/bin/bourne'}, false)
+    @jeni.check_new_user("peppapiglet", {:uid=>10101, :home=>'/home/peppa', :shell=>'/bin/bourne'}, false)
+    @jeni.errors?.should be_false
+    @jeni.check_user("peppapiglet")
     @jeni.errors?.should be_false
   end
   
@@ -267,6 +271,8 @@ describe Jeni do
     @jeni.check_new_group("piglets", {}, false)
     @jeni.errors?.should be_false
     @jeni.check_new_group("piglets", {:gid=>10101}, false)
+    @jeni.errors?.should be_false
+    @jeni.check_group("piglets")
     @jeni.errors?.should be_false
   end
   

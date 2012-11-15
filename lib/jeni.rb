@@ -70,6 +70,9 @@ module Jeni
       @errors = {}
       @owner = nil
       @gem_dir = nil
+      # record any new users and groups requested
+      @new_users = Array.new
+      @new_groups = Array.new
       if block_given? then
         yield self
       else
@@ -255,6 +258,7 @@ module Jeni
     # @option opts [String] :home path to home directory for user, defaults to /home/$user
     # @option opts [String] :shell path to shell for user, defaults to /bin/bash
     # @option opts [Boolean] :skip set true to skip if user exists else fail
+    # @option opts [Boolean] :user_group to create a user group for this user
     #
     def user(name, opts={})
       skip = opts[:skip]

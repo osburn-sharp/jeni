@@ -4,6 +4,10 @@
 == History
 
 
+[jeni-0.2.2 15-Nov-2012]
+
+  Ensure new users/groups are remember for subsequent user/group tests
+
 [jeni-0.2.1 26-Oct-2012]
 
   Added relative paths to targets that can take /usr/ or /usr/local as their root.
