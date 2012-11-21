@@ -4,6 +4,14 @@
 == History
 
 
+[jeni-0.2.3 21-Nov-2012]
+
+  Generate templates to /tmp directory before transferring to target. Allow users to
+  generate to an alternative target directory, either with target= method or optparse.
+  Allow a block for optparse that passes through the optparse object to allow custom
+  options to be added. Add classify method so templates can convert e.g. project name
+  into a Ruby class (my_project -> MyProject).
+
 [jeni-0.2.2 15-Nov-2012]
 
   Ensure new users/groups are remember for subsequent user/group tests

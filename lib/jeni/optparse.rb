@@ -73,6 +73,15 @@ module Jeni
         @target_root = '/usr/'
       end
       
+      opts.on('-t', '--target [PATH]', String, 'set the default target to value given') do |t|
+        @target_root = t
+      end
+      
+      
+      if block_given? then
+        yield(opts)
+      end
+      
       opts.on_tail('-h', '--help', 'you are looking at it') do
         puts opts
         exit 0

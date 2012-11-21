@@ -68,6 +68,11 @@ module Jeni
       @target_root = '/usr/'
     end
     
+    # set the default target root to the value given
+    def target=(path)
+      @target_root = path
+    end
+    
   end
   
 end

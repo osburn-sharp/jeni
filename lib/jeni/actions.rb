@@ -153,7 +153,7 @@ module Jeni
       puts target if @verbose
       
       # and write it out to the target, but make it a temp
-      temp_file = target_file + "._temp"
+      temp_file = File.join('/tmp', File.basename(target_file) + "._temp")
       File.open(temp_file, 'w') do |tfile|
         target.each_line do |tline|
           tfile.puts tline

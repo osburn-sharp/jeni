@@ -154,6 +154,16 @@ module Jeni
       end
     end
     
+    # convert a filename etc to a proper class name
+    # For example, converts 'my_service' to 'MyService'
+    #
+    # @param [String] string to convert to a classname
+    # @return [String] converted classname
+    def classify(string)
+      string = string.sub(/^[a-z\d]*/) { $&.capitalize }
+      string.gsub(/(?:_|(\/))([a-z\d]*)/) { "#{$1}#{$2.capitalize}" }.gsub('/', '::')
+    end
+    
     
     # helper to add commands for options
     def process_options(opts, target)
