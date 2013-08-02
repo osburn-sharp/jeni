@@ -53,7 +53,7 @@ module Jeni
       def_key = Answers[default]
       answers = (options.split(//) & AnswerKeys.split(//)).collect {|k| k == def_key ? k.upcase : k}.join('')     
       print "#{question}(#{answers})? "
-      response = gets.chomp.downcase
+      response = $stdin.gets.chomp.downcase
       if Answers.has_value?(response) then
         return Answers.index(response)
       else

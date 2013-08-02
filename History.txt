@@ -4,6 +4,11 @@
 == History
 
 
+[jeni-0.2.4 02-Aug-2013]
+
+  Jeni::IO change to use $stdin.gets instead of Kernel#gets, which will automatically
+  read from a file on the command line, not what is wanted here.
+
 [jeni-0.2.3 21-Nov-2012]
 
   Generate templates to /tmp directory before transferring to target. Allow users to

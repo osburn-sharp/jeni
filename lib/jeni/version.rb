@@ -1,17 +1,14 @@
 # Created by Jevoom
 #
-# 21-Nov-2012
-#   Generate templates to /tmp directory before transferring to target. Allow users to
-#   generate to an alternative target directory, either with target= method or optparse.
-#   Allow a block for optparse that passes through the optparse object to allow custom
-#   options to be added. Add classify method so templates can convert e.g. project name
-#   into a Ruby class (my_project -> MyProject).
+# 02-Aug-2013
+#   Jeni::IO change to use $stdin.gets instead of Kernel#gets, which will automatically
+#   read from a file on the command line, not what is wanted here.
 
 module Jeni
-  # version set to 0.2.3
-  Version = '0.2.3'
-  # date set to 21-Nov-2012
-  Version_Date = '21-Nov-2012'
-  #ident string set to: jeni-0.2.3 21-Nov-2012
-  Ident = 'jeni-0.2.3 21-Nov-2012'
+  # version set to 0.2.4
+  Version = '0.2.4'
+  # date set to 02-Aug-2013
+  Version_Date = '02-Aug-2013'
+  #ident string set to: jeni-0.2.4 02-Aug-2013
+  Ident = 'jeni-0.2.4 02-Aug-2013'
 end
