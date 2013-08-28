@@ -89,6 +89,9 @@ module Jeni
     # allow scripters to know where the gem directory is
     attr_reader :gem_dir
     
+    # allow the caller to know where relative targets will be installed
+    attr_reader :target_root
+    
     #protected :set_gem
     
     

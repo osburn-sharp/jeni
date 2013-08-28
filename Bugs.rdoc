@@ -1,5 +1,10 @@
 == Outstanding Bugs and Change Requests for Jeni
 
+[20-Aug-2013]
+
+  * Add a facility to check if a package has been installed and warn if it has not
+    or even exit on error
+
 [14-Sep-2012]
 
   * Crashes if it tries to read a link that is a file

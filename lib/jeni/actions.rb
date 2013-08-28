@@ -95,10 +95,7 @@ module Jeni
     # change the owner of a file
     def chown(file, owner)
       message = "#{file} to #{owner}"
-      if @pretend then
-        say(:chown, message, :ok)
-        return
-      end
+      return if @pretend 
       if FileTest.exists?(file) then
         FileUtils.chown(owner, nil, file)
         say(:chown, message, :ok)
@@ -110,10 +107,7 @@ module Jeni
     # change the group of a file
     def chgrp(file, owner)
       message = "#{file} to #{owner}"
-      if @pretend then
-        say(:chgrp, message, :ok)
-        return
-      end
+      return if @pretend 
       if FileTest.exists?(file) then
         FileUtils.chown(nil, owner, file)
         say(:chgrp, message, :ok)
@@ -125,9 +119,8 @@ module Jeni
     # make a file executable
     def chmod(file, mode)
       message = "#{file} to #{mode.to_s(8)}"
-      if @pretend then
-        say(:chmod, message, :ok)
-      elsif FileTest.exists?(file) then
+      return if @pretend 
+      if FileTest.exists?(file) then
         FileUtils.chmod(mode,file)
         say(:chmod, message, :ok)
       else

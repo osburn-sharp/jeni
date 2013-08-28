@@ -55,7 +55,7 @@ module Jeni
       print "#{question}(#{answers})? "
       response = $stdin.gets.chomp.downcase
       if Answers.has_value?(response) then
-        return Answers.index(response)
+        return Answers.key(response)
       else
         return default
       end

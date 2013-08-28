@@ -39,13 +39,21 @@ module Jeni
       return file
     end
     
-    # check if target directory exists and is writeable
-    # this will create a target if it does not exist (and all intermediate paths) unless
-    # the nomkdir option is set
+    # check if target's directory exists and is writeable
+    #
+    # this will create a directory for the target if it does not 
+    # exist (and all intermediate paths) unless the nomkdir option is set
+    #
+    # @param [String] target path to the file to be created
+    # @param [String] owner of the target file and directory if it
+    #  does not already exist
+    #
     def check_target(target, owner=nil)
+      # if its not an absolute path then get the absolute path
       unless target[0,1] == '/' 
         target = File.expand_path(File.join(@target_root, target))
       end
+      # now get the directory for the target and ensure it exists
       dir = File.dirname(target)
       unless FileTest.directory?(dir)
         unless @nomkdir 
