@@ -7,3 +7,6 @@ tmp/**/*
 
 .yardoc/
 .yardopts
+
+*.gem
+*.gemspec
