@@ -1,9 +1,17 @@
+# @markup rdoc
+# @title Bugs and Changes
+
 == Outstanding Bugs and Change Requests for Jeni
+
+[10-Oct-2014]
+
+  Convert to an instance eval approach rather than passing self to block!
 
 [20-Aug-2013]
 
   * Add a facility to check if a package has been installed and warn if it has not
-    or even exit on error
+    or even exit on error - alternatively just use File.exists? for an executable
+    and do it manually!
 
 [14-Sep-2012]
 

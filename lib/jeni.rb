@@ -102,9 +102,9 @@ module Jeni
     #   be taken
     #
     def self.new_from_gem(gem_name)
-      gem_spec = Gem::Specification.find_by_name(gem_name)
-      installer = self.new(gem_spec.gem_dir, gem_name)
-      installer.set_gem(gem_spec.gem_dir)
+      @gem_spec = Gem::Specification.find_by_name(gem_name)
+      installer = self.new(@gem_spec.gem_dir, gem_name)
+      installer.set_gem(@gem_spec.gem_dir)
       if block_given? then
         yield(installer)
       end
@@ -184,7 +184,7 @@ module Jeni
     # 
     # @param [String] source is the gem-relative path to the file to copy
     # @param [String] target is a relative or absolute path to copy to
-    # @params [Hash] opts options for copying the file
+    # @param [Hash] opts options for copying the file
     # @option opts [String] :chown the name of the owner
     # @option opts [String] :chgrp the name of the group
     # @option opts [Octal] :chmod octal bit settings for chmod
@@ -243,7 +243,7 @@ module Jeni
     # check that a file exists
     #
     # @param [String] file to test, relative to the source (e.g. gem)
-    # @param [Hash] options
+    # @param [Hash] opts fpr file checking
     # @option opts [Symbol] :executable to check if it is also executable
     #
     def file_exists?(file, opts={})
@@ -255,7 +255,7 @@ module Jeni
     # create a new user
     #
     # @param [String] name of the new user to create
-    # @param [Hash] options for creating the user
+    # @param [Hash] opts for creating the user
     # @option opts [Integer] :uid user id instead of next available
     # @option opts [Integer] :gid group id instead of next available
     # @option opts [String] :home path to home directory for user, defaults to /home/$user
@@ -274,7 +274,7 @@ module Jeni
     # create a new group
     #
     # @param [String] name of the new group to create
-    # @param [Hash] options for creating the user
+    # @param [Hash] opts for creating the user
     # @option opts [Integer] :gid group id instead of next available
     # @option opts [Boolean] :skip set true to skip if user exists else fail
     #
@@ -317,7 +317,7 @@ module Jeni
     end
     
     # as for {Jeni::Installer#template} but searches for the source template from a list of predefined
-    # directories. These are ~/.jermine/templates and /usr/local/share/templates
+    # directories. These are ~/.jeni/templates and /usr/local/share/templates
     # 
     # @param (see #template)
     #
@@ -343,7 +343,7 @@ module Jeni
     #
     # @param [String] source is the relative path to the file to wrap
     # @param [String] target is an absolute path for the wrapper
-    # @params [Hash] opts options for wrapping the file
+    # @param [Hash] opts options for wrapping the file
     # @option opts [String] :chown the name of the owner
     #
     def wrapper(source, target, opts={})

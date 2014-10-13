@@ -1,7 +1,5 @@
 # JENI
 
-_(a.k.a Jumpin Ermin's Nifty Installer)_
-
 A simple alternative to rubigen and thor that can be used to create a post-install script 
 for a gem needing more than the standard file ops covered by rubygems. It can also be used 
 for straight directories instead of gems, if required.
@@ -18,7 +16,8 @@ To install,
 
     gem install jeni.
     
-It is a plain library with no binaries or the like.
+It is a plain library with no binaries or the like. To use it, you need to write a ruby
+script.
 
 ## Getting Started
 
@@ -98,7 +97,7 @@ If the target is a relative path then it will be relative to /usr/local unless y
 use the -u switch (with the optparse option) or the {Jeni::Options.usr} method to set
 it to '/usr'.
     
-Global options can also be set, as defined in #{Jeni::Options}. The same options can be set using {Jeni::Optparse#optparse} 
+Global options can also be set, as defined in {Jeni::Options}. The same options can be set using {Jeni::Optparse#optparse} 
 to automatically process command line options. Call it with ARGV instead of manually setting Jeni's options.
 
     Jeni::Installer.new_from_gem('jeni') do |jeni|
@@ -110,6 +109,48 @@ to automatically process command line options. Call it with ARGV instead of manu
       jeni.link('source/jeni.rb', File.join(target_dir, 'jeni_link.rb'))
     end.run!
 
+### Templates
+
+Jeni can do more than copy and link files. It can also generate files from a simple
+template. The templating engine is [HAML](http://haml.info/) but Jeni processes the
+template so that it is treated as plain text (otherwise HAML would try to convert)
+the file into HTML). 
+
+The main reason for having a template is to substitute local values into common files.
+For example, it can be used to create a config file for a gem that can point to files
+within the gem itself - useful for Sinatra with the app directory distributed in the gem.
+
+To set a local variable, simply add it as a hash pair to the template call:
+
+    jeni.template('source/template.haml.rb', 
+      File.join(target_dir, 'app.conf'), 
+      app_dir:File.join(jeni.gem_dir, 'app'))
+    
+Note that Jeni provides the gem directory through its own method {Jeni}Within the template, the hash key becomes a variable: 'app_dir' that can be interpolated
+in the usual manner:
+
+    # my config file
+    APP_ROOT=#{app_dir}    
+
+Finally, in case it might be useful, you can also have templates stored in standard
+places (~/.jeni/templates and /usr/local/share/templates) and Jeni will search for them when
+you use {Jeni::Installer#standard_template} (you only need to pass the basename).
+    
+### Wrappers, gems and rubies
+
+Jeni might not be necessary with Gems could install more files. With this in mind, Jeni tries to do
+the same sort of things that Gem does - e.g. create a wrapper script that calls the
+executable script in the gem. It even uses the same shebang approach because the sheband method
+has been lifted and adapted from rubygems. See the method description to understand
+all of the options: {Jeni::Actions#shebang}.
+
+However, if you are working on a platform that supports multiple rubies then I would
+recommend you leave selection of which ruby to the system. The only way this appears to
+be possible is with a custom shebang (add "custom_shebang: $env ruby" to your gemrc). This
+does not take any notice of options in the original shebang, but if they are universal you
+could always add them to you custom shebang? This is because the rubygems does pick up
+the original script's shebang but always tampers with the "ruby" bit. e.g. if it
+was /usr/bin/env ruby it changes the ruby to ruby19 (even /usr/bin/ruby19?).
 
 ## Code Walkthrough
 
@@ -130,9 +171,12 @@ Jeni has a variety of options that can be set and are separately defined in {Jen
 
 The code is available from [GitHub](https://github.com/osburn-sharp/jeni)
 
+Jeni stands for "Jumpin Ermin's Nifty Installer". Don't ask.
+
+
 ## Dependencies
 
-A ruby compiler - works with 1.8.7.
+A ruby compiler >= 1.8.7. Currently works on 1.9.3 and 2.0.0.
 
 Check the {file:Gemfile} for other dependencies.
 
@@ -169,7 +213,8 @@ To test users and groups there is the following, which will fail if not run as r
     
 ## Bugs
 
-Details of any unresolved bugs and change requests are in {file:Bugs.rdoc Bugs}. Issues can be logged and tracked through
+Details of any unresolved bugs and change requests are in {file:Bugs.rdoc Bugs}. 
+Issues can be logged and tracked through
 [GitHub](https://github.com/osburn-sharp/jeni/issues).
 
 ## Changelog

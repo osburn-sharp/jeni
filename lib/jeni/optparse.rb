@@ -77,6 +77,10 @@ module Jeni
         @target_root = t
       end
       
+      opts.on('-E', '--env-shebang', 'use the default env script in wrapper shebangs!') do
+        @env_shebang = true
+      end
+      
       
       if block_given? then
         yield(opts)

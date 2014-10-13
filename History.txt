@@ -4,6 +4,10 @@
 == History
 
 
+[jeni-0.2.6 13-Oct-2014]
+
+  General tidy up and sort out of the shebang method.
+
 [jeni-0.2.5 28-Aug-2013]
 
   make target_root accessible and ignore chown etc on pretend
@@ -32,4 +36,4 @@
 
 [jeni-0.2.0 04-Oct-2012]
 
-  Application forked from local 'jeni' due to Gam-space name clash.
+  Application forked from local 'jeni' due to Gem-space name clash.

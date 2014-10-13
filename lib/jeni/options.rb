@@ -73,6 +73,11 @@ module Jeni
       @target_root = path
     end
     
+    # set the shebang in wrappers to use env (e.g. /usr/bin/env)
+    def env_shebang(bool=true)
+      @env_shebang = bool
+    end
+    
   end
   
 end

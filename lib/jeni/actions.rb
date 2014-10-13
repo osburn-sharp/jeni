@@ -18,7 +18,9 @@
 
 module Jeni
   
-  # Implementation mixin containing methods for each action that Jeni carries out
+  # Implementation mixin containing methods for each action that Jeni carries out. These
+  # are internal methods - full details of the methods to use when writing
+  # a Jeni script are contained in the {file:README.md README} file and in {Jeni::Installer}.
   module Actions
     
     # Create a copy of the source file as the target file
@@ -163,7 +165,7 @@ module Jeni
     # return the path to the standard template, which can be found in 
     # the places search below.
     def get_template(source)
-      gsource = File.expand_path(File.join('.jermine', 'templates', source), '~')
+      gsource = File.expand_path(File.join('.jeni', 'templates', source), '~')
       unless File.exists?(gsource)
         gsource = File.join('usr', 'local', 'share', 'templates', source)
         unless File.exists(gsource)
@@ -279,60 +281,76 @@ TEXT
     # Generates a #! line for +bin_file_name+'s wrapper copying arguments if
     # necessary.
     #
+    # Adapted from rubygems.
+    #
     # If the :custom_shebang config is set, then it is used as a template
-    # for how to create the shebang used for to run a gem's executables.
+    # for how to create the shebang used for to run a gem's executables. Note
+    # you can set a custom_shebang in .gemrc e.g. "custom_shebang: $env ruby".
+    # It is set as a string and not a symbol.
     #
-    # The template supports 4 expansions:
+    # A custom shebang overides any other output.
     #
-    # $env the path to the unix env utility
-    # $ruby the path to the currently running ruby interpreter
-    # $exec the path to the gem's executable
-    # $name the name of the gem the executable is for
+    # if @env_shebang (see {Jeni::Options#env_shebang}) is set then the result will be the local env with the
+    # current ruby install name, e.g.: "/usr/bin/env ruby20". If there are
+    # options on the original script's shebang then the resultis slightly different.
+    # The shebang becomes a /bin/sh, which then exec's the ruby install name with
+    # the -x switch and itself as the file, finally inserting the original shebang
+    # (although the ruby has been replace with Gem.ruby). Love to know what all
+    # this is about!
     #
-    def shebang(source)
+    # Otherwise the value of Gem.ruby will be used with any of options
+    # added to the shebang on the original script.
+    #
+    # The template used for custom shebangs supports 4 expansions:
+    #
+    # * $env the path to the unix env utility
+    # * $ruby the path to the currently running ruby interpreter
+    # * $exec the path to the gem's executable
+    # * $name the name of the gem the executable is for
+    #
+    def shebang(path)
+      ruby_name = RbConfig::CONFIG['ruby_install_name'] if @env_shebang
       
-      env_paths = %w[/usr/bin/env /bin/env]
+      #path = File.join gem_dir, spec.bindir, bin_file_name
+      bin_file_name = File.basename(path)
+      first_line = File.open(path, "rb") {|file| file.gets}
       
-      ruby_name = Gem::ConfigMap[:ruby_install_name] #if @env_shebang
-      
-      first_line = File.open(source, "rb") {|file| file.gets}
-      env_path = nil
-  
       if /\A#!/ =~ first_line then
         # Preserve extra words on shebang line, like "-w". Thanks RPA.
         shebang = first_line.sub(/\A\#!.*?ruby\S*((\s+\S+)+)/, "#!#{Gem.ruby}")
         opts = $1
         shebang.strip! # Avoid nasty ^M issues.
       end
-  
+      
       if which = Gem.configuration[:custom_shebang]
+        # replace bin_file_name with "ruby" to avoid endless loops
+        which = which.gsub(/ #{bin_file_name}$/," #{RbConfig::CONFIG['ruby_install_name']}")
+        
         which = which.gsub(/\$(\w+)/) do
           case $1
           when "env"
-            env_path ||= env_paths.find do |e_path|
-                            File.executable? e_path
-                          end
+            @env_path ||= Gem::Installer::ENV_PATHS.find {|env_path| File.executable? env_path }
           when "ruby"
             "#{Gem.ruby}#{opts}"
           when "exec"
             bin_file_name
           when "name"
-            spec.name
+            @app_name
           end
         end
-  
+        
         return "#!#{which}"
-      end
-  
-      if not ruby_name then
-        "#!#{Gem.ruby}#{opts}"
+        
+      elsif not ruby_name then
+        return "#!#{Gem.ruby}#{opts}"
       elsif opts then
-        "#!/bin/sh\n'exec' #{ruby_name.dump} '-x' \"$0\" \"$@\"\n#{shebang}"
+        return "#!/bin/sh\n'exec' #{ruby_name.dump} '-x' \"$0\" \"$@\"\n#{shebang}"
       else
         # Create a plain shebang line.
-        env_path ||= env_paths.find {|e_path| File.executable? e_path }
-        "#!#{env_path} #{ruby_name}"
-      end
+        @env_path ||= Gem::Installer::ENV_PATHS.find {|env_path| File.executable? env_path }
+        return "#!#{@env_path} #{ruby_name}"
+      end      
+
     end
     
     # create a new user

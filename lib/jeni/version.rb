@@ -1,13 +1,13 @@
 # Created by Jevoom
 #
-# 28-Aug-2013
-#   make target_root accessible and ignore chown etc on pretend
+# 13-Oct-2014
+#   General tidy up and sort out of the shebang method.
 
 module Jeni
-  # version set to 0.2.5
-  Version = '0.2.5'
-  # date set to 28-Aug-2013
-  Version_Date = '28-Aug-2013'
-  #ident string set to: jeni-0.2.5 28-Aug-2013
-  Ident = 'jeni-0.2.5 28-Aug-2013'
+  # version set to 0.2.6
+  Version = '0.2.6'
+  # date set to 13-Oct-2014
+  Version_Date = '13-Oct-2014'
+  #ident string set to: jeni-0.2.6 13-Oct-2014
+  Ident = 'jeni-0.2.6 13-Oct-2014'
 end
